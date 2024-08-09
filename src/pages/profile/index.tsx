@@ -7,6 +7,7 @@ import { useQuery } from "react-query";
 import { UserDataInterface } from "types/server-data.types";
 import axios from "axios";
 import { useState } from "react";
+import { USER_INFO } from "constants/query-keys";
 
 const { Title } = Typography;
 
@@ -25,7 +26,7 @@ const Profile = () => {
   ];
 
   const { data, isLoading, isError } = useQuery<UserDataInterface>(
-    ["user-info"],
+    [USER_INFO],
     async () => {
       const response = await axios.get(`/api/user`);
       return response.data;

@@ -1,5 +1,6 @@
 import { Button, Col, Form, FormProps, Input, message, Row } from "antd";
 import axios, { AxiosError, AxiosResponse } from "axios";
+import { UPDATE_USER_INFO, USER_INFO } from "constants/query-keys";
 import { useEffect } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { UserDataInterface } from "types/server-data.types";
@@ -12,13 +13,13 @@ const UpdateProfile = (props: any) => {
   const [messageApi, contextHolder] = message.useMessage();
 
   const { mutate: updateProfile, isLoading } = useMutation({
-    mutationKey: "update-user-info",
+    mutationKey: [UPDATE_USER_INFO],
     mutationFn: async (data: UserDataInterface) => {
       return await axios.patch(`/api/user`, data);
     },
     onSuccess: (res: AxiosResponse) => {
       messageApi.success("Succesfully updated!");
-      queryClient.invalidateQueries("user-info");
+      queryClient.invalidateQueries([USER_INFO]);
     },
     onError: (err: AxiosError) => {
       messageApi.error("An error occured!");

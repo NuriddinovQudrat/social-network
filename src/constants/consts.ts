@@ -1,1 +1,1 @@
-export const BASE_URL = "https://mswjs.io/";
+export const BASE_URL = "/";
