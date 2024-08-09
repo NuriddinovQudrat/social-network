@@ -1,12 +1,17 @@
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
+import Loader from "components/loader";
+import CustomConfigProvider from "hocs/custom-config-provider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import reportWebVitals from "./reportWebVitals";
 import App from "./App";
-import Loader from "components/loader";
-import { ReactQueryProvider } from "hocs/react-query";
-import CustomConfigProvider from "hocs/custom-config-provider";
+import { ToastContainer } from "react-toastify";
+
 import "./index.css";
 import "antd/dist/reset.css";
+import "react-toastify/dist/ReactToastify.css";
+
+const queryClient = new QueryClient();
 
 async function enableMocking() {
   const { worker } = await import("./mocks/browser");
@@ -17,10 +22,11 @@ async function enableMocking() {
 enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <CustomConfigProvider>
+      <ToastContainer />
       <Suspense fallback={<Loader />}>
-        <ReactQueryProvider>
+        <QueryClientProvider client={queryClient}>
           <App />
-        </ReactQueryProvider>
+        </QueryClientProvider>
       </Suspense>
     </CustomConfigProvider>
   );
