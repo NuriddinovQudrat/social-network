@@ -15,8 +15,14 @@ export const handlers = [
     return HttpResponse.json(user);
   }),
 
-  http.patch("/api/user", async ({ request }) => {
+  http.patch<any, UserDataInterface>("/api/user", async ({ request }) => {
     const updatedUser = await request.json();
+
+    user.name = updatedUser.name;
+    user.email = updatedUser.email;
+    user.bio = updatedUser.bio;
+    // user.image = updatedUser.image;
+
     return HttpResponse.json(updatedUser, { status: 201 });
   }),
 ];
