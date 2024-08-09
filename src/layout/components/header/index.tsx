@@ -12,6 +12,9 @@ import { useLayoutEffect, useState } from "react";
 import { MdLogout } from "react-icons/md";
 import { UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
+import { CgProfile } from "react-icons/cg";
+import { Link } from "react-router-dom";
+import { ROUTER } from "constants/router";
 
 const { Header } = Layout;
 const { Text } = Typography;
@@ -32,23 +35,32 @@ const CustomHeader = (props: PropsInterface) => {
     {
       key: "1",
       label: (
-        <div>
-          <Space className="">
-            <Avatar size={40} style={{ textTransform: "uppercase" }}>
-              Nuriddinov Qudrat
-            </Avatar>
-            <div className="w-[150px]">
-              <h5 className="mr-2 my-0">Nuriddinov Qudrat</h5>
-            </div>
-          </Space>
-        </div>
+        <Space className="">
+          <Avatar size={40} style={{ textTransform: "uppercase" }}>
+            Nuriddinov Qudrat
+          </Avatar>
+          <div className="w-[150px]">
+            <h5 className="mr-2 my-0">Nuriddinov Qudrat</h5>
+          </div>
+        </Space>
       ),
     },
     {
       key: "2",
       label: (
+        <Link to={ROUTER.PROFILE}>
+          <Space className="p-1" align="center">
+            <CgProfile size={18} className="mt-[5px] mr-[10px]" />
+            <Text>My Profile</Text>
+          </Space>
+        </Link>
+      ),
+    },
+    {
+      key: "3",
+      label: (
         <Space className="p-1" align="center">
-          <MdLogout size={18} color="red" className="mt-[5px] mr-[10px]" />
+          <MdLogout size={18} color="red" className="mr-[10px]" />
           <Text className="text-[red]">Logout</Text>
         </Space>
       ),

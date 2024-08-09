@@ -2,7 +2,7 @@ import { ThemeConfig } from "antd";
 
 const themeConfig: ThemeConfig = {
   token: {
-    colorPrimary: "blue",
+    colorPrimary: "#3d97f2",
     colorBgContainer: "#ffffff",
     colorBgBase: "#f0f0f0",
     fontSize: 16,
