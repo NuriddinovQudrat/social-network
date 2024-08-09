@@ -11,4 +11,11 @@ export const handlers = [
       image: userImg,
     });
   }),
+
+  http.patch("/api/user", async ({ request }) => {
+    const requestBody = await request.json();
+    return HttpResponse.json({
+      requestBody,
+    });
+  }),
 ];

@@ -1,25 +1,34 @@
-import { Button, Col, Form, FormProps, Input, Row } from "antd";
+import { Button, Col, Form, FormProps, Input, message, Row } from "antd";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { useEffect } from "react";
-
-type FieldType = {
-  name?: string;
-  email?: string;
-  bio?: string;
-  image?: string;
-};
+import { useMutation, useQueryClient } from "react-query";
+import { UserDataInterface } from "types/server-data.types";
 
 const UpdateProfile = (props: any) => {
   const { data } = props;
+  const queryClient = useQueryClient();
   const [form] = Form.useForm();
 
-  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    console.log("Success:", values);
-  };
+  const [messageApi, contextHolder] = message.useMessage();
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
-    errorInfo
+  const { mutate: updateProfile, isLoading } = useMutation({
+    mutationKey: "update-user-info",
+    mutationFn: async (data: UserDataInterface) => {
+      return await axios.patch(`/api/user`, data);
+    },
+    onSuccess: (res: AxiosResponse) => {
+      messageApi.success("Succesfully updated!");
+      queryClient.invalidateQueries("user-info");
+    },
+    onError: (err: AxiosError) => {
+      messageApi.error("An error occured!");
+    },
+  });
+
+  const onFinish: FormProps<UserDataInterface>["onFinish"] = (
+    values: UserDataInterface
   ) => {
-    console.log("Failed:", errorInfo);
+    updateProfile(values);
   };
 
   useEffect(() => {
@@ -27,19 +36,19 @@ const UpdateProfile = (props: any) => {
   }, [data, form]);
 
   return (
-    <div>
+    <>
+      {contextHolder}
       <Form
         name="update-profile"
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
         layout="vertical"
         form={form}
       >
         <Row gutter={[16, 16]}>
           <Col span={12}>
-            <Form.Item<FieldType>
+            <Form.Item<UserDataInterface>
               label="Name"
               name="name"
               rules={[{ required: true, message: "Please input your name!" }]}
@@ -49,7 +58,7 @@ const UpdateProfile = (props: any) => {
           </Col>
 
           <Col span={12}>
-            <Form.Item<FieldType>
+            <Form.Item<UserDataInterface>
               label="Email"
               name="email"
               rules={[
@@ -65,19 +74,19 @@ const UpdateProfile = (props: any) => {
           </Col>
 
           <Col span={24}>
-            <Form.Item<FieldType> label="Bio" name="bio">
+            <Form.Item<UserDataInterface> label="Bio" name="bio">
               <Input.TextArea />
             </Form.Item>
           </Col>
         </Row>
 
         <div className="text-right">
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={isLoading}>
             Update
           </Button>
         </div>
       </Form>
-    </div>
+    </>
   );
 };
 
