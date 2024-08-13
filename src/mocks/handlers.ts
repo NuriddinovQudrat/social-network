@@ -2,6 +2,23 @@ import { http, HttpResponse } from "msw";
 import userImg from "../assets/images/user.jpg";
 import { UserDataInterface } from "types/server-data.types";
 
+const allUsers: UserDataInterface[] = [
+  {
+    id: 1,
+    name: "Nuriddinov Qudratjon",
+    email: "qudratjonnuriddinov2603@gmail.com",
+    bio: "Front End Developer",
+    image: userImg,
+  },
+  {
+    id: 2,
+    name: "John",
+    email: "john@gmail.com",
+    bio: "Front End Developer",
+    image: userImg,
+  },
+];
+
 const user: UserDataInterface = {
   id: 1,
   name: "Nuriddinov Qudratjon",
@@ -24,5 +41,9 @@ export const handlers = [
     // user.image = updatedUser.image;
 
     return HttpResponse.json(updatedUser, { status: 201 });
+  }),
+
+  http.get("/api/all/users", () => {
+    return HttpResponse.json(allUsers);
   }),
 ];

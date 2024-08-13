@@ -1,11 +1,15 @@
 import axios from "axios";
-import { API_USER } from "constants/endpoints";
+import { API_ALL_USER, API_USER } from "constants/endpoints";
 import { toast } from "react-toastify";
 import { UserDataInterface } from "types/server-data.types";
 
 export class UserApi {
   getProfileDetails(): Promise<UserDataInterface> {
     return axios.get(API_USER).then((response) => response.data);
+  }
+
+  getALlUsers(): Promise<any> {
+    return axios.get(API_ALL_USER).then((response) => response.data);
   }
 
   updateProfile(data: UserDataInterface): Promise<UserDataInterface> {
